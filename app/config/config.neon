@@ -23,3 +23,23 @@ services:
 
 	# tables
 	sessions: Model\Sessions
+
+opauth:
+	path: '/auth/'
+	debug: true
+	callback_url: '{path}callback'
+	security_salt: '123abc456def'
+	callback_transport: 'session'
+	Strategy:
+		Facebook:
+			app_id: '1513089362276099'
+			app_secret: 'c98039a2f289a5de8cd06562c3fcfbe3'
+		Google:
+			client_id: ''
+			client_secret: ''
+		Twitter:
+			key: ''
+			secret: ''
+		LinkedIn:
+			api_key: ''
+			secret_key: ''

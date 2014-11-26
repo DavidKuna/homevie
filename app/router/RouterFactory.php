@@ -15,12 +15,12 @@ class RouterFactory
 {
 
 	private $container;
-	
-	
+
+
     public function __construct(Nette\DI\Container $container) {
 	    $this->container = $container;
     }
-	
+
 	/**
 	 * @return \Nette\Application\IRouter
 	 */
@@ -30,6 +30,7 @@ class RouterFactory
 		if ($this->container->parameters['consoleMode']) {
 			$router[] = new CliRouter(array('action' => 'Sync:server'));
 		} else {
+			\NetteOpauth\NetteOpauth::register($router);
 			$router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
 		}
 		return $router;

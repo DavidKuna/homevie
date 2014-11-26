@@ -1,0 +1,30 @@
+{block head}
+  <link href="{$basePath}/js/video-js/video-js.css" rel="stylesheet" type="text/css">
+{/block}
+{block subscripts}
+	<script src="{$basePath}/js/video-js/video.dev.js"></script>
+	<script src="{$basePath}/js/video-js/media.youtube.js"></script>
+	<script type="text/javascript">
+		var token = {$token};
+		var source = {$room->source};
+		videojs.options.flash.swf = "video-js.swf";
+	</script>
+{/block}
+{block content}
+<div class="row row-offcanvas row-offcanvas-right">
+	 <div class="col-xs-12 col-sm-9">		 
+		 <h1 n:block="title">Připojen v místnosti {$room->name}</h1>
+		 
+		 <div ng-controller="MessageCtrl"></div>
+		 <div ng-controller="VideoCtrl">
+			 <div>
+				<label for="source-url">URL: </label>
+				<form ng-submit="setSourceURL()">
+				   <input type="text" name="source-url" id="source-url" ng-model="source.url" />
+				   <input type="submit" value="Přehrát" />
+				</form>
+			</div>
+			<video id="videoplayer" class="video-js vjs-default-skin"></video>
+		 </div>
+	 </div>
+</div>

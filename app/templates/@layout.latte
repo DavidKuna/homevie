@@ -1,0 +1,95 @@
+{**
+ * My Application layout template.
+ *
+ * @param string   $basePath web base path
+ * @param string   $robots   tell robots how to index the content of a page (optional)
+ * @param array    $flashes  flash messages
+ *}
+
+<!DOCTYPE html>
+<html ng-app="movieSync">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="robots" content="{$robots}" n:ifset="$robots">
+
+	<title>{block title|striptags|upper}MovieSync devel{/block}</title>
+	
+	<link href="{$basePath}/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
+	<link href="{$basePath}/css/cover.css" rel="stylesheet">
+	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+	
+	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+	<script type="text/javascript">
+	var settings = {
+		domain : {$domain}
+	};
+	</script>
+	{block head}{/block}
+</head>
+
+<body>
+	<script>
+		window.fbAsyncInit = function() {
+		  FB.init({
+			appId      : '1513089362276099',
+			xfbml      : true,
+			version    : 'v1.0'
+		  });
+		};
+
+		(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {  return; }
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
+	<script> document.documentElement.className+=' js' </script>
+
+	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+			<li {ifCurrent Homepage:default}class="active"{/ifCurrent}><a href="{link Homepage:default}">Home</a></li>
+			<li {ifCurrent Room:default}class="active"{/ifCurrent}><a href="{link Room:default}">Rooms</a></li>
+          </ul>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div>
+	<div class="container">
+		{include content}
+
+	{block scripts}
+	<script src="{$basePath}/js/angular.min.js"></script>
+	<script src="{$basePath}/js/angular-init.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+	<script src="{$basePath}/js/controllers/websocket.js"></script>
+	<script src="{$basePath}/js/controllers/video.js"></script>
+	<script src="{$basePath}/js/jquery.js"></script>
+	<script src="{$basePath}/js/bootstrap.min.js"></script>
+	<script src="{$basePath}/js/main.js"></script>
+	<script src="{$basePath}/js/angular.js"></script>
+	{/block}
+	{block subscripts}{/block}
+	
+	<hr>
+    <footer>
+		<p>© Company 2014</p>
+    </footer>
+
+    </div>
+</body>
+</html>

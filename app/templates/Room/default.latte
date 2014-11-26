@@ -1,0 +1,16 @@
+{block content}
+
+ <div class="row row-offcanvas row-offcanvas-right container-left">
+	 <div class="col-xs-12 col-sm-9">
+		<h1 n:block="title">Seznam místností</h1>
+
+		{foreach $rooms as $room}
+		<div class="room">
+			<div class="date">{$room->created_at|date:'F j, Y'}</div>
+
+			<h2><a href="{link Room:view $room->id}">{$room->name}</a></h2>
+		</div>
+		{/foreach}
+		
+	</div><!--/span-->
+</div><!--/row-->

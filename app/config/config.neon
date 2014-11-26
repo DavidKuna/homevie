@@ -1,0 +1,25 @@
+parameters:
+	domain: homevie.tv
+
+php:
+	date.timezone: Europe/Prague
+	# zlib.output_compression: yes
+
+nette:
+	application:
+		errorPresenter: Error
+		mapping:
+			*: App\*Module\*Presenter
+
+	session:
+		expiration: 14 days
+
+
+services:
+	- Model\UserManager
+	- App\RouterFactory
+	SocketController: Model\SocketController
+	router: @App\RouterFactory::createRouter
+
+	# tables
+	sessions: Model\Sessions

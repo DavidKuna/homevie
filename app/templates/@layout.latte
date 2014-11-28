@@ -30,24 +30,7 @@
 </head>
 
 <body>
-	<script>
-		window.fbAsyncInit = function() {
-		  FB.init({
-			appId      : '1513089362276099',
-			xfbml      : true,
-			version    : 'v1.0'
-		  });
-		};
-
-		(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {  return; }
-			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-	</script>
-	<script> document.documentElement.className+=' js' </script>
+	{include 'components/trackingCodes.latte'}
 
 	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">

@@ -10,9 +10,7 @@
 	RewriteEngine On
 	RewriteBase /
 
-	RewriteCond %{HTTP_HOST} .
-	RewriteCond %{HTTP_HOST} !^homevie\.tv$
-	RewriteRule (.*) http://homevie.tv/$1 [R=301,L]
+
 
 	# prevents files starting with dot to be viewed by browser
 	RewriteRule /\.|^\. - [F]

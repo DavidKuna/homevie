@@ -1,2 +1,6 @@
 /nbproject
 /temp/*
+/vendor/*
+*.sql
+/log/*
+deploy.ini

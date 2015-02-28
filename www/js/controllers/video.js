@@ -64,11 +64,7 @@ module.provider('VideoPlayer', function() {
           return addListener(event)(callback);
         },
 		currentTime: function(){
-			if(player.options_['starttime'] > player.currentTime()){
-				return player.options_['starttime'];
-			}else{
-				return player.currentTime();
-			}
+			return player.currentTime();
 		},
 		receive: function(cmd, data){
 			received = cmd;

@@ -16,7 +16,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	 * @inject
 	 */
 	public $sessions;
-	
+
 	public function beforeRender() {
 		$this->template->domain = $this->context->parameters['domain'];
 	}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Model;
+namespace Model\SocketServer;
 
 use Nette;
 
@@ -10,19 +10,19 @@ use Nette;
  * @author David Kuna
  */
 class Message extends Nette\Object {
-	
+
 	const JOIN = 'join';
 	const SOURCE = 'source';
 	const PLAY = 'play';
 	const PAUSE = 'pause';
-	
+
 	private $command;
 	private $who;
 	private $data;
 	private $string;
-	
+
 	/**
-	 * Entity of socket data 
+	 * Entity of socket data
 	 * @param string $data
 	 */
 	public function __construct($data){
@@ -33,19 +33,19 @@ class Message extends Nette\Object {
 		$this->data = $json['data'] ?: '';
 		$this->who = isset($json['who']) ? $json['who'] : null;
 	}
-	
+
 	public function getCommand(){
 		return $this->command;
 	}
-	
+
 	public function getSender(){
 		return $this->who;
 	}
-	
+
 	public function getData(){
 		return $this->data;
 	}
-	
+
 	public function getTime(){
 		if(isset($this->data['time'])){
 			return $this->data['time'];
@@ -53,7 +53,7 @@ class Message extends Nette\Object {
 			return 0;
 		}
 	}
-	
+
 	public function toString(){
 		return $this->string;
 	}

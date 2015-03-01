@@ -2,8 +2,7 @@
 
 namespace App;
 
-use Nette,
-	Ratchet\Server\IoServer,
+use Ratchet\Server\IoServer,
 	Ratchet\Http\HttpServer,
 	Ratchet\WebSocket\WsServer;
 
@@ -13,7 +12,7 @@ use Nette,
  * @author David Kuna
  */
 class SyncPresenter extends BasePresenter{
-	
+
 	public function actionServer()
     {
 		$port = 8080;

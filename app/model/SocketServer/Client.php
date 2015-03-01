@@ -1,6 +1,6 @@
 <?php
 
-namespace Model;
+namespace Model\SocketServer;
 
 use Nette,
 	Ratchet\ConnectionInterface;
@@ -11,14 +11,14 @@ use Nette,
  * @author David Kuna
  */
 class Client extends Nette\Object {
-	
+
 	private $id;
 	private $connection;
 	private $token;
 	private $roomId;
-	
+
 	/**
-	 * Entity of connection 
+	 * Entity of connection
 	 * @param \Ratchet\ConnectionInterface $connection
 	 * @param string $token
 	 */
@@ -27,19 +27,19 @@ class Client extends Nette\Object {
 		$this->id = $connection->resourceId;
 		$this->token = $token;
 	}
-	
+
 	public function getId(){
 		return $this->id;
 	}
-	
+
 	public function getToken(){
 		return $this->token;
 	}
-	
+
 	public function getRoomId(){
 		return $this->roomId;
 	}
-	
+
 	/**
 	 * Send message to client
 	 * @param json $message
@@ -47,29 +47,29 @@ class Client extends Nette\Object {
 	public function send($message){
 		$this->connection->send($message);
 	}
-	
+
 	/**
 	 * @param int $id
 	 */
 	public function setRoomId($id){
 		$this->roomId = $id;
 	}
-	
+
 	public function setTokent($token){
 		if(!empty($token)){
 			$this->token = $token;
 		}
 	}
-	
+
 	public function getConnection(){
 		return $this->connection;
 	}
-	
+
 	private function init(){
 		$this->sync();
 	}
-	
+
 	private function sync(){
-		
+
 	}
 }

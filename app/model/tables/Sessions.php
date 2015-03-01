@@ -13,11 +13,14 @@ namespace Model;
  *
  * @author David Kuna
  */
-class Sessions extends Table{
-	
-	/** @var string */
-	protected $tableName = 'session';
+class Sessions extends \BaseDbMapper{
 
+	/**
+	 * @return string
+	 */
+	public function getTableName() {
+		return 'session';
+	}
 
 	/**
 	 * @param string
@@ -39,7 +42,7 @@ class Sessions extends Table{
 	}
 
 
-// TODO 
+// TODO
 	/**
 	 * @param int
 	 * @param string

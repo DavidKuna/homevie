@@ -6,21 +6,20 @@
  * @author David Kuna
  */
 
-namespace Model;
-
-use Nette,
-	Nette\Database\Table\ActiveRow,
-	Nette\Database\Table\Selection;
-
-
 
 /**
  * Represents repository for database table
  */
-abstract class Table extends Nette\Object
+abstract class BaseDbMapper extends Nette\Object
 {
 	/** @var Nette\Database\Connection */
-	protected $db;
+	protected $Database;
+
+	/**
+	 * Název tabulky v databázi
+	 * @var string
+	 */
+	abstract function getTableName();
 
 	/**
 	 * @param  \Nette\Database\Context
@@ -28,12 +27,7 @@ abstract class Table extends Nette\Object
 	 */
 	public function __construct(Nette\Database\Context $db)
 	{
-		if (!isset($this->tableName)) {
-			$class = get_called_class();
-			throw new \NetteAddons\InvalidStateException("Property \$tableName must be defined in $class.");
-		}
-
-		$this->db = $db;
+		$this->Database = $db;
 	}
 
 
@@ -43,7 +37,7 @@ abstract class Table extends Nette\Object
 	 */
 	protected function getTable()
 	{
-		return $this->db->table($this->tableName);
+		return $this->Database->table($this->getTableName());
 	}
 
 
@@ -89,6 +83,23 @@ abstract class Table extends Nette\Object
 		return $this->getTable()->wherePrimary($id)->fetch();
 	}
 
+		/**
+	 * Namappuje data z databáze na předanou Entitu (objekt), nejprve hledá setter, pak přímo property
+	 * @param IBaseEntity $Entity
+	 * @param array $data
+	 * @return \IBaseEntity
+	 */
+	protected function mapEntity(IBaseEntity $Entity, array $data) {
+		foreach ($data as $var => $value) {
+			if (method_exists($Entity, $this->getSetterName($var))) {
+				$Entity->{$this->getSetterName($var)}($value);
+			} else if (property_exists($Entity, $var)) {
+				$Entity->$var = $value;
+			}
+		}
+
+		return $Entity;
+	}
 
 
 	/**
@@ -131,8 +142,8 @@ abstract class Table extends Nette\Object
 		$pairs = implode(', ', $pairs);
 		$values = array_values($values);
 
-		$this->db->queryArgs(
-			'INSERT INTO `' . $this->tableName . '` SET ' . $pairs .
+		$this->Database->queryArgs(
+			'INSERT INTO `' . $this->getTableName() . '` SET ' . $pairs .
 			' ON DUPLICATE KEY UPDATE ' . $pairs, array_merge($values, $values)
 		);
 

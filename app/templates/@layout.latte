@@ -4,53 +4,54 @@
  * @param string   $basePath web base path
  * @param string   $robots   tell robots how to index the content of a page (optional)
  * @param array    $flashes  flash messages
- *}
+*}
 
 <!DOCTYPE html>
 <html ng-app="movieSync">
-<head>
-	<meta charset="utf-8">
-	<meta name="description" content="">
-	<meta name="robots" content="{$robots}" n:ifset="$robots">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="robots" content="{$robots}" n:ifset="$robots">
 
-	<title>{block title|striptags|upper}Homevie devel{/block}</title>
-		
-	<link href="{$basePath}/css/main.css" rel="stylesheet">
-	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
-	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-	
-	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
-	<script type="text/javascript">
-	var settings = {
-		domain : {$domain}
-	};
-	</script>
-	{block head}{/block}
-</head>
+		<title>{block title|striptags|upper}Homevie devel{/block}</title>
 
-<body>
-	{include 'components/trackingCodes.latte'}
-	<div class="topBar">
-		<span class="logo"></span>
-		<span class="joinButton">Join Application</span>
-	</div>
-	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
-	<div class="appWrapper">
-		{include content}
-	</div>
-		
-	{block scripts}
-	<script src="{$basePath}/js/angular.min.js"></script>
-	<script src="{$basePath}/js/angular-init.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-	<script src="{$basePath}/js/controllers/websocket.js"></script>
-	<script src="{$basePath}/js/controllers/video.js"></script>
-	<script src="{$basePath}/js/jquery.js"></script>
-	<script src="{$basePath}/js/bootstrap.min.js"></script>
-	<script src="{$basePath}/js/main.js"></script>
-	<script src="{$basePath}/js/angular.js"></script>
-	{/block}
-	{block subscripts}{/block}
-	
-</body>
+		<link href="{$basePath}/css/main.css" rel="stylesheet">
+		<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+		<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+		<script type="text/javascript">
+			var settings = {
+				domain: {$domain}
+			};
+		</script>
+		{block head}{/block}
+	</head>
+
+	<body>
+		{include 'components/trackingCodes.latte'}
+		<div class="topBar">
+			<span class="logo"></span>
+			<span class="joinButton">Join Application</span>
+		</div>
+		<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+		<div class="appWrapper">
+			{include content}
+		</div>
+
+		{block scripts}
+		<script src="{$basePath}/js/angular.min.js"></script>
+		<script src="{$basePath}/js/angular-init.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+		<script src="{$basePath}/js/controllers/websocket.js"></script>
+		<script src="{$basePath}/js/controllers/video.js"></script>
+		<script src="{$basePath}/js/jquery.js"></script>
+		<script src="{$basePath}/js/bootstrap.min.js"></script>
+		<script src="{$basePath}/js/main.js"></script>
+		<script src="{$basePath}/js/angular.js"></script>
+		<script src="{$basePath}/js/controllers/chat.js"></script>
+		{/block}
+		{block subscripts}{/block}
+
+	</body>
 </html>

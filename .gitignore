@@ -4,3 +4,4 @@
 *.sql
 /log/*
 deploy.ini
+app/config/config.local.neon

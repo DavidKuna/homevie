@@ -249,7 +249,7 @@ class RoomManager extends Nette\Object {
 	// TODO - nejde brát podle created_at ale je třeba přidat atribut last action nebo tak
 	private function clearRooms() {
 		$this->database->table('room')
-			->where("(created_at + INTERVAL 5 MINUTE <= NOW()) AND id NOT IN (" . array_keys($this->rooms) . ")")
+			->where("(created_at + INTERVAL 5 MINUTE <= NOW()) AND id NOT IN (" . implode(',', array_keys($this->rooms)) . ")")
 			->delete();
 	}
 }

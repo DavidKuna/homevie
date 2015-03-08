@@ -18,7 +18,9 @@ nette:
 services:
 	- Model\UserManager
 	- App\RouterFactory
-	SocketController: Model\SocketController
+	SocketController: Model\SocketServer\SocketController
+	ServiceRooms: Model\Rooms\Service
+	DbMapperRooms: Model\Rooms\DbMapper
 	router: @App\RouterFactory::createRouter
 
 	# tables

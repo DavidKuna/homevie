@@ -21,10 +21,11 @@ class HomepagePresenter extends BasePresenter
     {
         $form = new UI\Form;
         $form->addText('source', '')
-				->setAttribute('class', 'form-control')
+				->setAttribute('class', 'appSearchInput')
 				->setAttribute('placeholder', 'http://youtube.com')
 				->setRequired('Zadejte prosím URL videa na youtube.com');
-        $form->addSubmit('create', 'Vytvořit místnost');
+        $form->addSubmit('create', 'Go')
+			->setAttribute('class', 'appSearchButt');
         $form->onSuccess[] = array($this, 'crateRoomFormSucceeded');
         return $form;
     }
@@ -38,7 +39,15 @@ class HomepagePresenter extends BasePresenter
 
 	public function renderDefault()
 	{
-
+		$this->template->youtubePlayUrl = 'https://www.youtube.com/watch?v=';
+		$this->template->randomVideoHashes = [
+			'9MWbm9bQz5Y',
+			'ZwzY1o_hB5Y',
+			'NFfTHoJ9khs',
+			'AIO2MEJCD9k',
+			'q4AQDDKglEE',
+			'OUi42PsV2hQ'
+		];
 	}
 
 }

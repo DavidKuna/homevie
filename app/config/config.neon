@@ -1,5 +1,5 @@
 parameters:
-	domain: homevie.tv
+	domain: homevietv
 
 php:
 	date.timezone: Europe/Prague

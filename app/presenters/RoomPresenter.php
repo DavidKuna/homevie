@@ -73,8 +73,8 @@ class RoomPresenter extends BasePresenter {
 		return $data;
 	}
 
-	public function renderCreate(){
-		$newRoom = $this->context->ServiceRooms->createNewRoom();
+	public function renderCreate($source){
+		$newRoom = $this->context->ServiceRooms->createNewRoom($source);
 		$this->redirect("Room:view", array('roomId' => $newRoom->getId()));
 		exit;
 	}

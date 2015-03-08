@@ -20,11 +20,12 @@ class DbMapper extends \BaseDbMapper{
 
 	/**
 	 * Vytvoří novou místnost a uloží ji do databáze
+	 * @param string $source
 	 * @return \Model\Rooms\Room
 	 */
-	public function createNewRoom() {
+	public function createNewRoom($source) {
 		$data['name'] = time();
-		$data['source'] = 'http://www.youtube.com/';
+		$data['source'] = $source;
 		$row = $this->createOrUpdate($data)->toArray();
 
 		$settings['source'] =  $row['source'];

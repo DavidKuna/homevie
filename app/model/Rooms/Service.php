@@ -18,9 +18,10 @@ class Service {
 
 	/**
 	 * Vytvoří novou místnost a uloží ji do databáze
+	 * @param string $source
 	 * @return \Model\Rooms\Room
 	 */
-	public function createNewRoom(){
-		return $this->DbMapper->createNewRoom();
+	public function createNewRoom($source){
+		return $this->DbMapper->createNewRoom($source);
 	}
 }

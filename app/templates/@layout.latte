@@ -31,30 +31,11 @@
 <body>
 	{include 'components/trackingCodes.latte'}
 	<div class="topBar">
-		<span class="logo"><a href="{link Default:}"></a></span>
+		<span class="logo"></span>
 		<span class="joinButton">Join Application</span>
 	</div>
 	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
-	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
 	<div class="appWrapper">
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-			<li {ifCurrent Homepage:default}class="active"{/ifCurrent}><a href="{link Homepage:default}">Home</a></li>
-			<li {ifCurrent Room:default}class="active"{/ifCurrent}><a href="{link Room:default}">Rooms</a></li>
-          </ul>
-        </div><!-- /.nav-collapse -->
-      </div><!-- /.container -->
-    </div>
-	<div class="container">
 		{include content}
 	</div>
 		
@@ -71,11 +52,5 @@
 	{/block}
 	{block subscripts}{/block}
 	
-	<hr>
-    <footer>
-		<p>© Company 2014</p>
-    </footer>
-
-    </div>
 </body>
 </html>

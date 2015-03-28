@@ -1,8 +1,10 @@
-angular.module('movieSync', [
+var source = ""; //TODO
+angular.module('Homevie', [
 	'ngRoute',
 	'angular-websocket',
 	'angular-video',
-	'controllers'
+	'controllers',
+	'instant-search'
 ])
 		.config(function (WebSocketProvider) {
 			WebSocketProvider

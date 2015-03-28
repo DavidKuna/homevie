@@ -23,6 +23,7 @@ class HomepagePresenter extends BasePresenter
         $form->addText('source', '')
 				->setAttribute('class', 'appSearchInput')
 				->setAttribute('placeholder', 'http://youtube.com')
+				->setAttribute('ng-model', 'searchQuery')
 				->setRequired('Zadejte prosím URL videa na youtube.com');
         $form->addSubmit('create', 'Go')
 			->setAttribute('class', 'appSearchButt');

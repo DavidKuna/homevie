@@ -19,8 +19,7 @@ angular.module('instant-search', [])
 
 			responsePromise.success(function(response) {
 				if(response.data.items) {
-					$scope.results = response.data.items;
-					console.log($scope.results);
+					$scope.results = response.data.items;					
 				} else {
 					$scope.results = [];
 				}		

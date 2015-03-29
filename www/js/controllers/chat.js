@@ -38,8 +38,7 @@ $(function () {
 	if(messages) {
 
 		messages.forEach(function(message) {
-			console.log(message);
-			addToChat(message.msg, message.user);
+				addToChat(message.msg, message.user);
 		});
 		
 	}

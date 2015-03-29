@@ -4,6 +4,7 @@
 {block subscripts}
 <script src="{$basePath}/js/video-js/video.dev.js"></script>
 <script src="{$basePath}/js/video-js/media.youtube.js"></script>
+<script src="{$basePath}/js/controllers/webRTC.js"></script>
 <script type="text/javascript">
 	var token = {$token};
 	var source = {$room->source};
@@ -12,17 +13,50 @@
 
 	messages = [];
 	{foreach $messages as $message}
-		data = {};
-		data.msg = {$message->text};
-		data.user = {$message->user_id};
-		data.datetime = "";
-		messages.push(data);
+	data = {};
+	data.msg = {$message->text};
+	data.user = {$message->user_id};
+	data.datetime = "";
+	messages.push(data);
 	{/foreach}
 
 
 </script>
+<script src='http://static.opentok.com/webrtc/v2.2/js/opentok.min.js'></script>
+<script type="text/javascript">
+	// Initialize API key, session, and token...
+	// Think of a session as a room, and a token as the key to get in to the room
+	// Sessions and tokens are generated on your server and passed down to the client
+	var ot_apiKey = {$OT_data["apiKey"]};
+	var ot_sessionId = {$OT_data["sessionId"]};
+	var ot_token = {$OT_data["token"]};      // Initialize session, set up event listeners, and connect
+	var ot_session = OT.initSession(ot_apiKey, ot_sessionId);
+
+	ot_session.on("streamCreated", function (event) {
+		ot_session.subscribe(event.stream);
+	});
+	myElement = document.getElementById("ot_voice");
+
+	ot_session.connect(ot_token, function (error) {
+
+		if(error) {
+			console.log(error);
+		}
+		
+		publisher = OT.initPublisher(myElement);
+		publisher.publishVideo(false);
+		publisher.publishAudio(true);
+
+		ot_session.publish(publisher);
+	});
+
+//	subscriber.subscribeToAudio(false); // audio off
+//	subscriber.subscribeToAudio(true); // audio on
+</script>
 {/block}
 {block content}
+
+<div id="ot_voice"></div>
 
 <div class="row row-offcanvas row-offcanvas-right">
 	<div class="col-xs-12 col-sm-9">		 

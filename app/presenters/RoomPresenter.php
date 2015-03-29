@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Nette;
+use Nette, OpenTok\OpenTok;
 
 /**
  * Description of RoomPresenter
@@ -54,13 +54,13 @@ class RoomPresenter extends BasePresenter {
 			$this->redirect("Room:create");
 			exit;
 		}
-		//$this->template->openTokData = $this->getOpenTokData();
+		$this->template->OT_data = $this->getOpenTokData();
 
 		$data['token'] = $this->generateToken();
 		$data['room_id'] = $this->roomId;
 		$data['phpsessid'] = $this->getSeesionId();
 		//$data['owner'] = 0;
-		
+
 		$messages = $this->getRoomMessages($roomId);
 		$this->template->messages = $messages;
 		$this->template->token = $data['token'];
@@ -69,12 +69,16 @@ class RoomPresenter extends BasePresenter {
 	}
 
 	private function getOpenTokData() {
-		$apiObj = new \OpenTokSDK(\API_Config::API_KEY, \API_Config::API_SECRET);
-		$session = $apiObj->create_session();
+		
+		$key = "45193792";
+		$secret = "0fb9c2c8bb922fe0c53213448e116651c02a4e12";
+		
+		$apiObj = new OpenTok($key, $secret);
+		$session = $apiObj->createSession();
 
-		$data['apiKey'] = \API_Config::API_KEY;
+		$data['apiKey'] = $key;
 		$data['sessionId'] = $session->getSessionId();
-		$data['token'] = $apiObj->generate_token($data['sessionId']);
+		$data['token'] = $apiObj->generateToken($data['sessionId']);
 
 		return $data;
 	}

@@ -26,7 +26,11 @@ function constructMessage(command, data) {
 
 var controllers = angular.module('controllers', [])
 		.controller('MessageCtrl', function ($scope, WebSocket) {
-
+			
+			$scope.chat = {
+				messages: []
+			};
+			
 			WebSocket.onopen(function () {
 				var join = {
 					cmd: 'join',

@@ -3,15 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function addToChat(message,  client) {
+function addToChat(message, client, time) {
 	if(client) {
 		client = "ID: "+client;
 	} else {
 		client = "Já";
 	}
 	
-	$("#chatBox").append("<div>"+client+" -- "+message+"</div>");
+	if(!time){		
+		var currentdate = new Date(); 
+		time = ('0' + currentdate.getHours()).slice(-2) + ":" + ('0' + currentdate.getMinutes()).slice(-2);
+	}
 	
+	message = {
+		client: client,
+		text: message,
+		time: time
+	};
+	angular.element($("#msgCtrl")).scope().chat.messages.push(message);
+	angular.element($("#msgCtrl")).scope().$apply();	
 }
 
 

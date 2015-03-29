@@ -8,9 +8,22 @@
 	var token = {$token};
 	var source = {$room->source};
 	videojs.options.flash.swf = "video-js.swf";
+
+
+	messages = [];
+	{foreach $messages as $message}
+		data = {};
+		data.msg = {$message->text};
+		data.user = {$message->user_id};
+		data.datetime = "";
+		messages.push(data);
+	{/foreach}
+
+
 </script>
 {/block}
 {block content}
+
 <div class="row row-offcanvas row-offcanvas-right">
 	<div class="col-xs-12 col-sm-9">		 
 		<h1 n:block="title">Připojen v místnosti {$room->name}</h1>

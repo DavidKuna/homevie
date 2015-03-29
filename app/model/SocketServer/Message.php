@@ -54,6 +54,14 @@ class Message extends Nette\Object {
 			return 0;
 		}
 	}
+	
+	public function getMessage() {
+		if (isset($this->data['msg'])) {
+			return $this->data['msg'];
+		} else {
+			return false;
+		}
+	}
 
 	public function toString() {
 		$json['cmd'] = @$this->command;
@@ -63,9 +71,12 @@ class Message extends Nette\Object {
 		$this->string = $json;
 		return $json;
 	}
+	
+	public function convertToArray() {
+		$this->data = (array) $this->data;
+	}
 
 	public function appendToMsg($key, $value) {
-		$this->data = (array) $this->data;
 		$this->data[$key] = $value;
 		return $this;
 	}

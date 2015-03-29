@@ -19,5 +19,14 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	public function beforeRender() {
 		$this->template->domain = $this->context->parameters['domain'];
+		$this->template->youtubePlayUrl = 'https://www.youtube.com/watch?v=';
+		$this->template->randomVideoHashes = [
+			'9MWbm9bQz5Y',
+			'ZwzY1o_hB5Y',
+			'NFfTHoJ9khs',
+			'AIO2MEJCD9k',
+			'q4AQDDKglEE',
+			'OUi42PsV2hQ'
+		];
 	}
 }

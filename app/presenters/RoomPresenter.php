@@ -2,7 +2,8 @@
 
 namespace App;
 
-use Nette;
+use Nette,
+	Nette\Application\UI;
 
 /**
  * Description of RoomPresenter
@@ -68,7 +69,21 @@ class RoomPresenter extends BasePresenter {
 		$this->context->httpResponse->setCookie('TOKEN', $data['token'], '1 days', null, null, null, false);
 	}
 
-	private function getOpenTokData() {
+	protected function createComponentSearchForm()
+    {
+        $form = new UI\Form;
+        $form->addText('query', '')
+				->setAttribute('class', 'appSearchInput')
+				->setAttribute('placeholder', 'Search a video or paste URL')
+				->setAttribute('ng-model', 'searchQuery')
+				->setAttribute('ng-submit', 'setSourceURL()')
+				->setRequired('Zadejte prosím URL videa na youtube.com');
+        $form->addSubmit('search', 'Go')
+			->setAttribute('class', 'appSearchButt');
+        return $form;
+    }
+
+	private function getOpenTokData(){
 		$apiObj = new \OpenTokSDK(\API_Config::API_KEY, \API_Config::API_SECRET);
 		$session = $apiObj->create_session();
 

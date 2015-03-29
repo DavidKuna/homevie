@@ -25,7 +25,7 @@
 		<video id="videoplayer" class="video-js vjs-default-skin"></video>
 	</div>
 	<div id="msgCtrl" ng-controller="MessageCtrl" class="appChat">
-		<section id="chatBox" class="scrollbar">
+		<section id="chatBox" class="scrollbar" schroll-bottom="chat.messages">
 			<div ng-repeat="message in chat.messages">
 				<div class="messageHead">
 					<span class="time">{{ message.time }}</span>

@@ -6,14 +6,30 @@ angular.module('Homevie', [
 	'controllers',
 	'instant-search'
 ])
-		.config(function (WebSocketProvider) {
-			WebSocketProvider
-					.prefix('')
-					.uri('ws://' + settings.domain + ':8080');
-		}).config(function (VideoPlayerProvider) {
-	VideoPlayerProvider
+	.config(function (WebSocketProvider) {
+		WebSocketProvider
+				.prefix('')
+				.uri('ws://' + settings.domain + ':8080');
+	})
+	.config(function (VideoPlayerProvider) {
+		VideoPlayerProvider
 			.src(source);
-});
+	})
+	.directive('schrollBottom', function () {
+		return {
+			scope: {
+				schrollBottom: "="
+			},
+			link: function (scope, element) {
+				scope.$watchCollection('schrollBottom', function (newValue) {
+					if (newValue)
+					{
+						$(element).scrollTop($(element)[0].scrollHeight);
+					}
+				});
+			}
+		};
+	});;
 
 function constructMessage(command, data) {
 	var msg = {

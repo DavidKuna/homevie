@@ -8,8 +8,8 @@
 			'controls': true,
 			'preload': 'auto',
 			'autoplay': false,
-			'height': 480,
-			'width': 854,
+			'height': 390,
+			'width': 640,
 			'src': ""
 		};
 

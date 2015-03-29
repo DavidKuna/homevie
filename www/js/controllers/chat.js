@@ -25,14 +25,17 @@ function jquery_receive(msg) {
 $(function () {
 	myScope = angular.element($("#msgCtrl")).scope();
 
-	$('#message').change(function () {
-		data = {};
-		data.msg = this.value;
-		cmd = "chat";
-		a = myScope.sendChat(cmd, data);
+	$('#message').keypress(function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+			data = {};
+			data.msg = this.value;
+			cmd = "chat";
+			a = myScope.sendChat(cmd, data);
 
-		addToChat(data.msg);
-		
-		this.value = '';
+			addToChat(data.msg);
+
+			this.value = '';
+		}
 	});
 });

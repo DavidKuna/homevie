@@ -30,13 +30,16 @@
 	<body>
 		{include 'components/trackingCodes.latte'}
 		<div class="topBar">
-			<span class="logo"></span>
+			<a href="{link Homepage:default}">
+				<span class="logo"></span>
+			</a>
 			<span class="joinButton">Join Application</span>
 		</div>
 		<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 		<div class="appWrapper">
 			{include content}
 		</div>
+		<div class="clear"></div>
 
 		{block scripts}
 		<script src="{$basePath}/js/angular.min.js"></script>
@@ -54,4 +57,10 @@
 		{block subscripts}{/block}
 
 	</body>
+	
+	<footer>
+		<a href="{link Homepage:default}">About project</a>
+		<a href="{link Homepage:default}">How to use</a>
+		<a href="{link Homepage:default}">Contact</a>
+	</footer>
 </html>

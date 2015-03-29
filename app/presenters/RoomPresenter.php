@@ -2,7 +2,9 @@
 
 namespace App;
 
-use Nette, OpenTok\OpenTok;
+use Nette,
+	OpenTok\OpenTok,
+	Nette\Application\UI;
 
 /**
  * Description of RoomPresenter
@@ -69,10 +71,10 @@ class RoomPresenter extends BasePresenter {
 	}
 
 	private function getOpenTokData() {
-		
+
 		$key = "45193792";
 		$secret = "0fb9c2c8bb922fe0c53213448e116651c02a4e12";
-		
+
 		$apiObj = new OpenTok($key, $secret);
 		$session = $apiObj->createSession();
 
@@ -81,6 +83,19 @@ class RoomPresenter extends BasePresenter {
 		$data['token'] = $apiObj->generateToken($data['sessionId']);
 
 		return $data;
+	}
+
+	protected function createComponentSearchForm() {
+		$form = new UI\Form;
+		$form->addText('query', '')
+				->setAttribute('class', 'appSearchInput')
+				->setAttribute('placeholder', 'Search a video or paste URL')
+				->setAttribute('ng-model', 'searchQuery')
+				->setAttribute('ng-submit', 'setSourceURL()')
+				->setRequired('Zadejte prosím URL videa na youtube.com');
+		$form->addSubmit('search', 'Go')
+				->setAttribute('class', 'appSearchButt');
+		return $form;
 	}
 
 	public function renderCreate($source) {

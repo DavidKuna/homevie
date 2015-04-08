@@ -50,8 +50,8 @@ class RoomManager extends Nette\Object {
 				break;
 		}
 
-		$message->convertToArray();
-		$message = $message->appendToMsg("client_id", $sender->getID());
+		$message->convertToArray()
+			->appendToMsg("client_id", $sender->getID());
 
 		$receivers = $this->getRoomatesArray($sender, $message);
 		$this->sendToReceivers($sender, $receivers);
@@ -62,14 +62,14 @@ class RoomManager extends Nette\Object {
 		$client_id = $sender->getID();
 		$room_id = $sender->getRoomId();
 		$text = $message->getMessage();
-		
+
 		$array["user_id"] = $client_id;
 		$array["room_id"] = $room_id;
 		$array["text"] = $text;
 		$array["created_at"] = Date("Y-m-d H:i:s");
-		
-		$table = $this->database->query("INSERT INTO message", $array);
-		
+
+		$this->database->query("INSERT INTO message", $array);
+
 	}
 
 	private function processMessageSource(Client $sender, Message $message) {
@@ -108,8 +108,9 @@ class RoomManager extends Nette\Object {
 		$client->setTokent($message->getData());
 		if ($this->syncClient($client)) {
 			echo "Client ({$client->getId()}) has been joined to room {$client->getRoomId()}\n";
-			//echo "Setting: " . $this->getRoom($client->getRoomId())->getSettingMessage() . "\n";
-			$client->send($this->getRoom($client->getRoomId())->getSettingMessage());
+			$message = new Message($this->getRoom($client->getRoomId())->getSettingMessage());
+			$message->appendToMsg('client_id', $client->getId());
+			$client->send($message->toString());
 		} else {
 			echo "Creating client session failed! ({$client->getId()})\n";
 			$client->send(self::ERROR_SYNC);

@@ -4,7 +4,8 @@ angular.module('Homevie', [
 	'angular-websocket',
 	'angular-video',
 	'controllers',
-	'instant-search'
+	'instant-search',
+	'rt.eventemitter'
 ])
 	.config(function (WebSocketProvider) {
 		WebSocketProvider
@@ -29,7 +30,7 @@ angular.module('Homevie', [
 				});
 			}
 		};
-	});;
+	});
 
 function constructMessage(command, data) {
 	var msg = {
@@ -53,7 +54,7 @@ var controllers = angular.module('controllers', [])
 					data: token
 				};
 				WebSocket.send(JSON.stringify(join));
-				_d('connected');
+				_d('connected');								
 			});
 
 			WebSocket.onmessage(function (event) {

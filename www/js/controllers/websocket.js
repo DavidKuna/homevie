@@ -101,7 +101,16 @@ module.provider('WebSocket', function() {
 
         },
 		receive: function(cmd, data){
-			$rootScope.$broadcast('VideoCtrl.receive', cmd, data);
+			
+			if(cmd === 'videoChat') {
+				$rootScope.$broadcast('VideoChatCtrl.receive', cmd, data);
+			} else {
+				if(cmd === 'setting') {
+					$rootScope.clientId = data.client_id;
+				}
+				$rootScope.$broadcast('VideoCtrl.receive', cmd, data);
+			}
+			
 		}
       };
 

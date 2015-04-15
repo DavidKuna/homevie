@@ -1,14 +1,16 @@
 {block videochat}
 
-<div ng-controller="VideoChatCtrl">
-	<div class="video-wrapper">
-	  <chat-video-player class="col-md-4" ng-repeat="peer in peers" vid-src="{{ peer.stream }}"></chat-video-player>
+<div ng-controller="VideoChatCtrl" class="appVideoChatWraper">
+	
+	<div class="appVideoChat" id="myWebCam">
+		<video ng-show="myWebCam.isVisible" ng-src="{{ getLocalVideo() }}" autoplay muted></video>
+	</div>
+	
+	<div class="appVideoChat" ng-repeat="peer in peers">
+	  <chat-video-player vid-src="{{ peer.stream }}"></chat-video-player>
 	</div>
 
-	<div class="video-wrapper">
-	  <div class="col-md-2">
-		<video ng-src="{{ getLocalVideo() }}" autoplay muted></video>
-	  </div>
-	</div>
+	<div class="clear"></div>
+	<span ng-show="!myWebCam.isVisible" class="joinButton" ng-click="startStream()">Join webcam</span>
 </div>
 {/block}

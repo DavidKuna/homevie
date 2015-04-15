@@ -32,8 +32,6 @@
 
 </div>
 
-{include '../components/videochat.latte'}
-
 <div class="appRoom">
 	<div ng-controller="VideoCtrl" class="appVideoPlayer">		
 		<video id="videoplayer" class="video-js vjs-default-skin"></video>
@@ -51,6 +49,8 @@
 		<textarea id="message" class="chatMessageInput"></textarea>
 	</div>
 	<div class="clear"></div>
+	
+	{include '../components/videochat.latte'}
 </div>
 
 <div ng-controller="initialSearchCtrl" ng-init="init(6)">

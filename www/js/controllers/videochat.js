@@ -1,23 +1,28 @@
 angular.module('controllers')
   .controller('VideoChatCtrl', function ($sce, VideoStream, $scope, Room, $rootScope) {
+	
+	$scope.peers = [];
+	$scope.myWebCam = {
+		isVisible: false
+	};
+	var stream;
+	
+	$scope.initVideo = function(){
+		if (!window.RTCPeerConnection || !navigator.getUserMedia) {
+		  $scope.error = 'WebRTC is not supported by your browser. You can try the app with Chrome and Firefox.';
+		  return;
+		}
 
-    if (!window.RTCPeerConnection || !navigator.getUserMedia) {
-      $scope.error = 'WebRTC is not supported by your browser. You can try the app with Chrome and Firefox.';
-      return;
-    }
-
-    var stream;
-
-    VideoStream.get()
-    .then(function (s) {
-      stream = s;
-      Room.init(stream);
-      stream = URL.createObjectURL(stream);
-      Room.joinRoom(1);
-    }, function () {
-      $scope.error = 'No audio/video permissions. Please refresh your browser and allow the audio/video capturing.';
-    });
-    $scope.peers = [];
+		VideoStream.get()
+		.then(function (s) {
+		  stream = s;
+		  Room.init(stream);
+		  stream = URL.createObjectURL(stream);
+		  Room.joinRoom(1);
+		}, function () {
+		  $scope.error = 'No audio/video permissions. Please refresh your browser and allow the audio/video capturing.';
+		});
+	};	    
 	
 	$scope.$on('VideoChatCtrl.receive', function ($scope, cmd, data) {
 		console.log('VideoChatCtrl.receive', cmd, data);
@@ -43,7 +48,12 @@ angular.module('controllers')
       });
     });
 
-    $scope.getLocalVideo = function () {	
+    $scope.getLocalVideo = function () {
       return $sce.trustAsResourceUrl(stream);
     };
+	
+	$scope.startStream = function() {
+		$scope.initVideo();
+		$scope.myWebCam.isVisible = true;
+	};
   });

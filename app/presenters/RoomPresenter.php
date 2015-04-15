@@ -61,7 +61,7 @@ class RoomPresenter extends BasePresenter {
 		$data['room_id'] = $this->roomId;
 		$data['phpsessid'] = $this->getSeesionId();
 		//$data['owner'] = 0;
-		
+
 		$messages = $this->getRoomMessages($roomId);
 		$this->template->messages = $messages;
 		$this->template->token = $data['token'];
@@ -95,8 +95,13 @@ class RoomPresenter extends BasePresenter {
 	}
 
 	public function renderCreate($source) {
-		$newRoom = $this->context->ServiceRooms->createNewRoom($source);
-		$this->redirect("Room:view", array('roomId' => $newRoom->getId()));
+		if(isset($source)) {
+			$newRoom = $this->context->ServiceRooms->createNewRoom($source);
+			$this->redirect("Room:view", array('roomId' => $newRoom->getId()));
+		} else {
+			$this->flashMessage('You have to fill video source');
+			$this->redirect("Homepage:default");
+		}
 		exit;
 	}
 

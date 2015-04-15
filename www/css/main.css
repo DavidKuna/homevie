@@ -132,6 +132,17 @@ footer a:hover {
 	display: block;
 }
 
+.appVideoChatWraper {
+	clear: both;
+	width: 100%;
+}
+.appVideoChat video {
+    width: 15%;
+    margin: 1%;
+    float: left;
+    position: relative;
+}
+
 .appVideoBox {
     width: 29%;
     margin: 2%;
@@ -164,6 +175,7 @@ footer a:hover {
 	border: 2px solid white;
     padding: 10px;
     border-radius: 5px;
+	cursor: pointer;
 }
 
 .appPlay {   

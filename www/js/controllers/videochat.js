@@ -14,8 +14,15 @@ angular.module('controllers')
 		}
 
 		VideoStream.get()
-		.then(function (s) {
-		  stream = s;
+		.then(function (stream) {
+			
+		var audioContext = new AudioContext; //or webkitAudioContext
+		var source = audioContext.createMediaStreamSource(stream);
+
+		var volume = audioContext.createGain();
+		source.connect(volume);
+		volume.connect(audioContext.destination);		
+	
 		  Room.init(stream);
 		  stream = URL.createObjectURL(stream);
 		  Room.joinRoom(1);

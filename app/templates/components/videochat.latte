@@ -2,15 +2,15 @@
 
 <div ng-controller="VideoChatCtrl" class="appVideoChatWraper">
 	
-	<div class="appVideoChat" id="myWebCam">
-		<video ng-show="myWebCam.isVisible" ng-src="{{ getLocalVideo() }}" autoplay muted></video>
+	<div class="appVideoChat audioStream" id="myWebCam">
+		<audio ng-show="myWebCam.isVisible" ng-src="{{ getLocalVideo() }}" autoplay muted></audio>
 	</div>
 	
 	<div class="appVideoChat" ng-repeat="peer in peers">
-	  <chat-video-player vid-src="{{ peer.stream }}"></chat-video-player>
+	  <chat-audio-player vid-src="{{ peer.stream }}"></chat-audio-player>
 	</div>
 
 	<div class="clear"></div>
-	<span ng-show="!myWebCam.isVisible" class="joinButton" ng-click="startStream()">Join webcam</span>
+	<span ng-show="!myWebCam.isVisible" class="joinButton" ng-click="startStream()">Join voice chat</span>
 </div>
 {/block}

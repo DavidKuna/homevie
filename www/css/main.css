@@ -271,3 +271,13 @@ footer a:hover {
 	                   color-stop(.5, rgba(255, 255, 255, .2)),
 					   color-stop(.5, transparent), to(transparent));
 }
+
+.audioStream {
+	background-image: url('/images/user_silhouette_80.png');
+	height: 80px;
+	width: 80px;
+	background-color: #020202;
+	border: #fff solid 1px;
+	float: left;
+	margin-right: 10px;
+}

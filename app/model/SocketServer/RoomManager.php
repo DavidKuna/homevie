@@ -50,6 +50,7 @@ class RoomManager extends Nette\Object {
 				break;
 		}
 
+		$message->convertToArray();
 		$message = $message->appendToMsg("client_id", $sender->getID());
 
 		$receivers = $this->getRoomatesArray($sender, $message);
@@ -58,6 +59,17 @@ class RoomManager extends Nette\Object {
 
 	private function processMessageChat(Client $sender, Message $message) {
 		//save messages etc
+		$client_id = $sender->getID();
+		$room_id = $sender->getRoomId();
+		$text = $message->getMessage();
+		
+		$array["user_id"] = $client_id;
+		$array["room_id"] = $room_id;
+		$array["text"] = $text;
+		$array["created_at"] = Date("Y-m-d H:i:s");
+		
+		$table = $this->database->query("INSERT INTO message", $array);
+		
 	}
 
 	private function processMessageSource(Client $sender, Message $message) {
@@ -96,7 +108,7 @@ class RoomManager extends Nette\Object {
 		$client->setTokent($message->getData());
 		if ($this->syncClient($client)) {
 			echo "Client ({$client->getId()}) has been joined to room {$client->getRoomId()}\n";
-			echo "Setting: " . $this->getRoom($client->getRoomId())->getSettingMessage() . "\n";
+			//echo "Setting: " . $this->getRoom($client->getRoomId())->getSettingMessage() . "\n";
 			$client->send($this->getRoom($client->getRoomId())->getSettingMessage());
 		} else {
 			echo "Creating client session failed! ({$client->getId()})\n";
@@ -261,8 +273,8 @@ class RoomManager extends Nette\Object {
 	private function clearRooms() {
 
 		$this->database->table('room')
-			->where("(created_at + INTERVAL 5 MINUTE <= NOW()) AND id NOT IN (" . implode(',', array_keys($this->rooms)) . ")")
-			->delete();
+				->where("(created_at + INTERVAL 5 MINUTE <= NOW()) AND id NOT IN (" . implode(',', array_keys($this->rooms)) . ")")
+				->delete();
 	}
 
 }

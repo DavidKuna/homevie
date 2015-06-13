@@ -20,7 +20,7 @@
 		"dg/adminer-custom": "1.*",
 		"cboden/Ratchet": "0.3.*",
 		"vojtech-dobes/extensions-list": "1.*",
-		"opentok/opentok": "v1.0"
+		"opentok/opentok": "2.2.x"
 	},
 	"require-dev": {
 		"nette/tester": "~0.9.5"

@@ -22,7 +22,7 @@ class HomepagePresenter extends BasePresenter
         $form = new UI\Form;
         $form->addText('source', '')
 				->setAttribute('class', 'appSearchInput')
-				->setAttribute('placeholder', 'http://youtube.com')
+				->setAttribute('placeholder', 'Search a video or paste URL')
 				->setAttribute('ng-model', 'searchQuery')
 				->setRequired('Zadejte prosím URL videa na youtube.com');
         $form->addSubmit('create', 'Go')
@@ -40,15 +40,6 @@ class HomepagePresenter extends BasePresenter
 
 	public function renderDefault()
 	{
-		$this->template->youtubePlayUrl = 'https://www.youtube.com/watch?v=';
-		$this->template->randomVideoHashes = [
-			'9MWbm9bQz5Y',
-			'ZwzY1o_hB5Y',
-			'NFfTHoJ9khs',
-			'AIO2MEJCD9k',
-			'q4AQDDKglEE',
-			'OUi42PsV2hQ'
-		];
 	}
 
 }

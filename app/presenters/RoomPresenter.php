@@ -44,7 +44,7 @@ class RoomPresenter extends BasePresenter {
 	}
 
 	private function getRoomMessages($room_id) {
-		$messages = $this->database->table("message")->where("room_id = ?", $room_id);
+		$messages = $this->database->table("message")->where("room_id = ?", $room_id)->order("created_at ASC");
 		return $messages;
 	}
 
@@ -55,7 +55,7 @@ class RoomPresenter extends BasePresenter {
 			$this->redirect("Room:create");
 			exit;
 		}
-		//$this->template->openTokData = $this->getOpenTokData();
+//		$this->template->OT_data = $this->getOpenTokData();
 
 		$data['token'] = $this->generateToken();
 		$data['room_id'] = $this->roomId;
@@ -65,6 +65,15 @@ class RoomPresenter extends BasePresenter {
 		$messages = $this->getRoomMessages($roomId);
 		$this->template->messages = $messages;
 		$this->template->token = $data['token'];
+
+		if ($this->getHttpRequest()->getCookie("chat_user_name")) {
+			$user_name = $this->getHttpRequest()->getCookie("chat_user_name");
+		} else {
+			$arr = array("Apple", "Orange", "Pineapple", "Melon", "Lemon", "Peach", "Strawberry", "Blueberry");
+			$user_name = $arr[array_rand($arr, 1)];
+		}
+		$this->template->user_name = $user_name;
+
 		$this->sessions->createOrUpdate($data);
 		$this->context->httpResponse->setCookie('TOKEN', $data['token'], '1 days', null, null, null, false);
 	}

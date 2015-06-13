@@ -12,11 +12,10 @@
 
 	messages = [];
 	{foreach $messages as $message}
-		data = {};
-		data.msg = {$message->text};
-		data.user = {$message->user_id};
-		data.datetime = "";
-		messages.push(data);
+	chatItem = {};
+	chatItem.cmd = "chat";
+	chatItem.data = { text: {$message->text}, user_name: {$message->user_name}, time: "", user_id: {$message->user_id} };	
+	messages.push(chatItem);
 	{/foreach}
 
 
@@ -37,13 +36,15 @@
 		<video id="videoplayer" class="video-js vjs-default-skin"></video>
 	</div>
 	<div id="msgCtrl" ng-controller="MessageCtrl" class="appChat">
+		Username: <input class="user_name" value="{$user_name}">
+		
 		<section id="chatBox" class="scrollbar" schroll-bottom="chat.messages">
 			<div ng-repeat="message in chat.messages">
 				<div class="messageHead">
-					<span class="time">{{ message.time }}</span>
-					<span class="name">{{ message.client }}:</span>
+					<span class="time">{{ message.time}}</span>
+					<span class="name">{{ message.user_name}}:</span>
 				</div>
-				<div class="messageText">{{ message.text }}</div>				
+				<div class="messageText">{{ message.text}}</div>				
 			</div>
 		</section>
 		<textarea id="message" class="chatMessageInput"></textarea>

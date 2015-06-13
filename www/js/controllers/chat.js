@@ -3,59 +3,73 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function addToChat(message, client, time) {
-	if(client) {
-		client = "ID: "+client;
-	} else {
-		client = "Já";
-	}
-	
-	if(!time){		
-		var currentdate = new Date(); 
-		time = ('0' + currentdate.getHours()).slice(-2) + ":" + ('0' + currentdate.getMinutes()).slice(-2);
-	}
-	
-	message = {
-		client: client,
-		text: message,
-		time: time
-	};
-	angular.element($("#msgCtrl")).scope().chat.messages.push(message);
-	angular.element($("#msgCtrl")).scope().$apply();	
-}
+HomevieChat = {
+	default_username: "info@room",
+	notice_join: "Nový uživatel v místnosti",
+	notice_disconnect: "Odešel uživatel",
+	sendToAll: function (chatItem) {
+		var cmd = chatItem.cmd;
 
+		if (cmd === "join") {
+			text = this.notice_join;
+			user_name = this.default_username;
+		}
 
-function jquery_receive(msg) {
-	message = msg.msg;
-	client = msg.client_id;
-	
-	addToChat(message, client);
-}
+		if (cmd === "disconnect") {
+			text = this.notice_disconnect;
+			user_name = this.default_username;
+		}
+
+		if (cmd === "chat") {
+			text = chatItem.data.text;
+			user_name = chatItem.data.user_name;
+		}
+
+		var time = chatItem.time;
+		if (!time) {
+			var currentdate = new Date();
+			time = ('0' + currentdate.getHours()).slice(-2) + ":" + ('0' + currentdate.getMinutes()).slice(-2);
+		}
+
+		var message = {user_name: user_name, text: text, time: time};
+		angular.element($("#msgCtrl")).scope().chat.messages.push(message);
+		angular.element($("#msgCtrl")).scope().$apply();
+	},
+};
 
 $(function () {
 	myScope = angular.element($("#msgCtrl")).scope();
 
-	$('#message').keypress(function(e) {
-		if(e.which == 13) {
+	$('#message').keypress(function (e) {
+		if (e.which === 13) {
 			e.preventDefault();
-			data = {};
-			data.msg = this.value;
-			cmd = "chat";
-			a = myScope.sendChat(cmd, data);
 
-			addToChat(data.msg);
+			var chatItem = {};
+			var chatText = $(this).val();
+			var user_name = $(".user_name").val();
+			
+			chatItem.cmd = "chat";
+			chatItem.data = {text: chatText, user_name: user_name};
+			a = myScope.sendChat(chatItem);
+			HomevieChat.sendToAll(chatItem);
+			
+			setCookie("chat_user_name", user_name, 30);
 
-			this.value = '';
+			$(this).val("");
 		}
 	});
-	
-	if(messages) {
 
-		messages.forEach(function(message) {
-			console.log(message);
-			addToChat(message.msg, message.user);
+	if (messages) {
+		messages.forEach(function (message) {
+			HomevieChat.sendToAll(message);
 		});
-		
 	}
-	
+
 });
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}

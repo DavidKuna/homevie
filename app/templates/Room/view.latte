@@ -97,8 +97,8 @@
 	</div>
 
 	<div class="appVideoBox" ng-repeat="video in results">
-		<a href="{link Room:create, "source" => $youtubePlayUrl}{{ video.id}}">
-			<div class="appPlay">Play video</div><img src="https://img.youtube.com/vi/{{ video.id}}/0.jpg"/>
+		<a href="{link Room:create, "source" => $youtubePlayUrl}{{ video.id.videoId }}">
+			<div class="appPlay">Přehrát video</div><img src="https://img.youtube.com/vi/{{ video.id.videoId }}/0.jpg"/>
 		</a>
 	</div>
 </div>

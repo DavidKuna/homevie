@@ -57,21 +57,29 @@ var controllers = angular.module('controllers', [])
 				_d('connected');								
 			});
 
+			//someone sends
 			WebSocket.onmessage(function (event) {
-				var msg = JSON.parse(event.data);
-				WebSocket.receive(msg.cmd, msg.data);
-				_d('message: ', msg);
+				var response = JSON.parse(event.data);
+				WebSocket.receive(response.cmd, response.data);
+				
+				var cmd = response.cmd;
+				if(cmd === "join" || cmd === "disconnect" || cmd === "chat") {
+					HomevieChat.sendToAll(response);
+				}
 			});
 
+			//Iam sending
 			$scope.$on('MessageCtrl.send', function ($scope, cmd, data) {
 				var message = constructMessage(cmd, data);
-				_d('MessageCtrl.send', message);
 				WebSocket.send(message);
 			});
 
-			$scope.sendChat = function (cmd, data) {
+			$scope.sendChat = function (chatItem) {
+				
+				var cmd = chatItem.cmd;
+				var data = chatItem.data;
+				
 				msg = constructMessage(cmd, data);
-				_d('WS: Send CHATmsg: ', msg);
 				WebSocket.send(msg);
 			};
 

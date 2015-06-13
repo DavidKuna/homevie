@@ -16,7 +16,8 @@ class Message extends Nette\Object {
 	const PLAY = 'play';
 	const PAUSE = 'pause';
 	const CHAT = 'chat';
-
+	const DISCONNECT = 'disconnect';
+	
 	private $command;
 	private $who;
 	private $data;
@@ -26,9 +27,15 @@ class Message extends Nette\Object {
 	 * Entity of socket data
 	 * @param string $data
 	 */
-	public function __construct($data) {
-		// TODO dodelat osetreni
-		$json = json_decode($data, true);
+	public function __construct($data, $isArray = false) {
+
+		if ($isArray) {
+			$json = $data;
+			$data = json_encode($json);
+		} else {
+			$json = json_decode($data, true);
+		}
+
 		$this->string = $data;
 		$this->command = $json['cmd'] ? : '';
 		$this->data = $json['data'] ? : '';
@@ -56,10 +63,18 @@ class Message extends Nette\Object {
 	}
 
 	public function getMessage() {
-		if (isset($this->data['msg'])) {
-			return $this->data['msg'];
+		if (isset($this->data['text'])) {
+			return $this->data['text'];
 		} else {
 			return false;
+		}
+	}
+	
+	public function getUserName() {
+		if (isset($this->data['user_name'])) {
+			return $this->data['user_name'];
+		} else {
+			return "";
 		}
 	}
 

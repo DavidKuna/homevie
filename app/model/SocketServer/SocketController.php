@@ -30,6 +30,14 @@ class SocketController extends Nette\Object implements MessageComponentInterface
 
 	public function onClose(ConnectionInterface $conn) {
 		$client = $this->roomManager->findClientById($conn->resourceId);
+		
+		$msg = array();
+		$msg["cmd"] = "disconnect";
+		$msg["data"]["client_id"] = $client;
+		$msg["who"] = "";
+		
+		$message = new Message($msg, true);
+		$this->roomManager->processMessage($client, $message);
 		$this->roomManager->disconnectClient($client);
 
         echo "Connection {$client->getId()} has disconnected\n";

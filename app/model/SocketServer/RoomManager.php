@@ -48,6 +48,8 @@ class RoomManager extends Nette\Object {
 				break;
 			case Message::CHAT: $this->processMessageChat($sender, $message);
 				break;
+			case Message::DISCONNECT: $this->processMessageDisconnect($sender, $message);
+				break;
 		}
 
 		$message->convertToArray()
@@ -56,20 +58,26 @@ class RoomManager extends Nette\Object {
 		$receivers = $this->getRoomatesArray($sender, $message);
 		$this->sendToReceivers($sender, $receivers);
 	}
+	
+		private function processMessageDisconnect(Client $sender, Message $message) {
+		//some code here?
+	}
 
 	private function processMessageChat(Client $sender, Message $message) {
 		//save messages etc
 		$client_id = $sender->getID();
 		$room_id = $sender->getRoomId();
 		$text = $message->getMessage();
-
+		$user_name = $message->getUserName();
+		
 		$array["user_id"] = $client_id;
 		$array["room_id"] = $room_id;
 		$array["text"] = $text;
 		$array["created_at"] = Date("Y-m-d H:i:s");
-
-		$this->database->query("INSERT INTO message", $array);
-
+		$array["user_name"] = $user_name;
+		
+		$table = $this->database->query("INSERT INTO message", $array);
+		
 	}
 
 	private function processMessageSource(Client $sender, Message $message) {

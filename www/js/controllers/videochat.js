@@ -16,7 +16,7 @@ angular.module('controllers')
 		VideoStream.get()
 		.then(function (s) {
 			stream = s;
-	/*
+	
 			var audioContext = new AudioContext();
 			var analyser = audioContext.createAnalyser();
 			var source = audioContext.createMediaStreamSource(stream);			
@@ -48,7 +48,7 @@ angular.module('controllers')
 				canvasContext.fillStyle = '#00ff00';
 				canvasContext.fillRect(0,120-average,500,500);				
 			}
-*/
+
 
 			Room.init(stream);
 			stream = URL.createObjectURL(stream);

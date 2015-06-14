@@ -2,7 +2,7 @@
 
 <div ng-controller="VideoChatCtrl" class="appVideoChatWraper">
 	
-	<div ng-show="myWebCam.isVisible" class="appVideoChat " id="myWebCam">
+	<div ng-show="myWebCam.isVisible" class="appVideoChat audioStream" id="myWebCam">
 		<audio ng-show="myWebCam.isVisible" ng-src="{{ getLocalVideo() }}" autoplay muted></audio>
 		<canvas></canvas>
 	</div>

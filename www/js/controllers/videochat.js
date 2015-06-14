@@ -14,19 +14,16 @@ angular.module('controllers')
 		}
 
 		VideoStream.get()
-		.then(function (stream) {	
-			
+		.then(function (s) {
+			stream = s;
+	/*
 			var audioContext = new AudioContext();
 			var analyser = audioContext.createAnalyser();
-			var source = audioContext.createMediaStreamSource(stream);
-			var volume = audioContext.createGain();					
+			var source = audioContext.createMediaStreamSource(stream);			
 			var javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
 			
 			analyser.smoothingTimeConstant = 0.3;
 			analyser.fftSize = 1024;
-			
-			source.connect(volume);
-			volume.connect(audioContext.destination);
 			
 			source.connect(analyser);
 			analyser.connect(javascriptNode);
@@ -49,10 +46,9 @@ angular.module('controllers')
 				
 				canvasContext.clearRect(0, 0, 500, 500);
 				canvasContext.fillStyle = '#00ff00';
-				canvasContext.fillRect(0,120-average,500,500);
-				console.log("onaudioprocess " + average);
+				canvasContext.fillRect(0,120-average,500,500);				
 			}
-
+*/
 
 			Room.init(stream);
 			stream = URL.createObjectURL(stream);

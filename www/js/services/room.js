@@ -25,7 +25,7 @@ angular.module('Homevie')
       }
       var pc = new RTCPeerConnection(iceConfig);
       peerConnections[id] = pc;
-	  if (typeof stream === 'MediaStream') {
+	  if (typeof stream !== 'undefined') {
 		console.log("pc.addStream", stream);
 		pc.addStream(stream);
 	  }
@@ -42,7 +42,8 @@ angular.module('Homevie')
 		if (!$rootScope.$$digest) {
 			$rootScope.$apply();
 		}
-		
+	/* TODO - nefunguje ve starším chrome "MediaStream has no audio track"
+	 * 32 < jsem netestoval
 		var audioContext = new AudioContext();
 		var analyser = audioContext.createAnalyser();
 		var source = audioContext.createMediaStreamSource(evnt.stream);				
@@ -72,7 +73,8 @@ angular.module('Homevie')
 			canvasContext.clearRect(0, 0, 500, 500);
 			canvasContext.fillStyle = '#00ff00';
 			canvasContext.fillRect(0,120-average,500,500);
-		}
+			//console.log("onaudioprocess " + average);
+		}*/
 		
       };
 	  pc.oniceconnectionstatechange = function (evnt) {

@@ -10,7 +10,8 @@ angular.module('Homevie')
           navigator.getUserMedia({
             video: false,
             audio: true
-          }, function (stream) {
+          }, function (s) {
+			stream = s;
             d.resolve(stream);
           }, function (e) {
             d.reject(e);

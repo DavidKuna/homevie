@@ -135,6 +135,7 @@ footer a:hover {
 .appVideoChatWraper {
 	clear: both;
 	width: 100%;
+	padding-top: 15px;
 }
 .appVideoChat video {
     width: 15%;
@@ -285,4 +286,10 @@ footer a:hover {
 .app_login {
 	width: 50%;
 	margin-bottom: 30px;
+}
+
+.audioStream canvas {
+	background-color: black;
+	width: 5px;
+	height: 25px;
 }

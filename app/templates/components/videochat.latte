@@ -4,10 +4,11 @@
 	
 	<div ng-show="myWebCam.isVisible" class="appVideoChat audioStream" id="myWebCam">
 		<audio ng-show="myWebCam.isVisible" ng-src="{{ getLocalVideo() }}" autoplay muted></audio>
+		<canvas></canvas>
 	</div>
 	
 	<div class="appVideoChat" ng-repeat="peer in peers">
-	  <chat-audio-player vid-src="{{ peer.stream }}" peer-name="{{ peer.id }}"></chat-audio-player>
+	  <chat-audio-player vid-src="{{ peer.stream }}" peer-name="{{ peer.id }}" peer-id="{{ peer.id }}"></chat-audio-player>
 	</div>
 
 	<div class="clear"></div>

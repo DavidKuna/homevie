@@ -16,11 +16,43 @@ angular.module('controllers')
 		VideoStream.get()
 		.then(function (stream) {	
 			
-			var audioContext = new AudioContext;
+			var audioContext = new AudioContext();
+			var analyser = audioContext.createAnalyser();
 			var source = audioContext.createMediaStreamSource(stream);
-			var volume = audioContext.createGain();
+			var volume = audioContext.createGain();					
+			var javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+			
+			analyser.smoothingTimeConstant = 0.3;
+			analyser.fftSize = 1024;
+			
 			source.connect(volume);
-			volume.connect(audioContext.destination);		
+			volume.connect(audioContext.destination);
+			
+			source.connect(analyser);
+			analyser.connect(javascriptNode);
+			javascriptNode.connect(audioContext.destination);
+
+			var cnvs = $('#myWebCam canvas')[0];
+			var canvasContext = cnvs.getContext("2d");					
+
+			javascriptNode.onaudioprocess = function(){
+				
+				var array =  new Uint8Array(analyser.frequencyBinCount);
+				analyser.getByteFrequencyData(array);
+				var values = 0;
+
+				var length = array.length; 
+				for (var i = 0; i < length; i++) {
+					values += array[i];
+				}
+				var average = values / length;
+				
+				canvasContext.clearRect(0, 0, 500, 500);
+				canvasContext.fillStyle = '#00ff00';
+				canvasContext.fillRect(0,120-average,500,500);
+				console.log("onaudioprocess " + average);
+			}
+
 
 			Room.init(stream);
 			stream = URL.createObjectURL(stream);
@@ -41,7 +73,7 @@ angular.module('controllers')
 		
 	});
     Room.on('peer.stream', function (peer) {
-      console.log('Client connected, adding new stream', peer);
+      console.log('Client connected, adding new stream', peer);	  		
       $scope.peers.push({
         id: peer.id,
         stream: URL.createObjectURL(peer.stream)

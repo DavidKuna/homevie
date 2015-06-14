@@ -42,6 +42,38 @@ angular.module('Homevie')
 		if (!$rootScope.$$digest) {
 			$rootScope.$apply();
 		}
+		
+		var audioContext = new AudioContext();
+		var analyser = audioContext.createAnalyser();
+		var source = audioContext.createMediaStreamSource(evnt.stream);				
+		var javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+		analyser.smoothingTimeConstant = 0.3;
+		analyser.fftSize = 1024;
+		
+		analyser.connect(javascriptNode);
+		source.connect(analyser);
+		javascriptNode.connect(audioContext.destination);
+
+		var cnvs = $('.audioStream[data-id="' + id + '"] canvas')[0];
+		var canvasContext = cnvs.getContext("2d");					
+
+		javascriptNode.onaudioprocess = function(){			
+			var array =  new Uint8Array(analyser.frequencyBinCount);
+			analyser.getByteFrequencyData(array);
+			var values = 0;
+
+			var length = array.length; 
+			for (var i = 0; i < length; i++) {
+				values += array[i];
+			}
+			var average = values / length;
+
+			canvasContext.clearRect(0, 0, 500, 500);
+			canvasContext.fillStyle = '#00ff00';
+			canvasContext.fillRect(0,120-average,500,500);
+		}
+		
       };
 	  pc.oniceconnectionstatechange = function (evnt) {
 		if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'closed') {

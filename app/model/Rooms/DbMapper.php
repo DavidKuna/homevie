@@ -26,9 +26,11 @@ class DbMapper extends \BaseDbMapper{
 	public function createNewRoom($source) {
 		$data['name'] = time();
 		$data['source'] = $source;
+		$data['hash'] = $uniq_id = \Helpers\StringHelper::generateRandomString(30);
 		$row = $this->createOrUpdate($data)->toArray();
-
+		
 		$settings['source'] =  $row['source'];
+		$settings['hash'] =  $row['hash'];
 		return new Room($row['id'], $settings);
 	}
 

@@ -30,6 +30,7 @@ class RouterFactory
 		if ($this->container->parameters['consoleMode']) {
 			$router[] = new CliRouter(array('action' => 'Sync:server'));
 		} else {
+			$router[] = new Route('watch/<roomHash>', 'Room:view');
 			$router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
 		}
 		return $router;

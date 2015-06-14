@@ -6,6 +6,10 @@
 	</div>
 
 </div>
+<div class="app_login">
+
+	<big>Hi {$userName}, what to play today?</big>
+</div>
 <div ng-controller="initialSearchCtrl">
 	<div class="appSearch">
 		<div class="appSearchBox">
@@ -22,8 +26,8 @@
 		<div class="clear"></div>
 
 		<div class="appVideoBox" ng-repeat="video in results">
-			<a href="{link Room:create, "source" => $youtubePlayUrl}{{ video.id.videoId }}">
-				<div class="appPlay">Přehrát video</div><img src="https://img.youtube.com/vi/{{ video.id.videoId }}/0.jpg"/>
+			<a href="{link Room:create, "source" => $youtubePlayUrl}{{ video.id.videoId}}">
+				<div class="appPlay">Přehrát video</div><img src="https://img.youtube.com/vi/{{ video.id.videoId}}/0.jpg"/>
 			</a>
 		</div>				
 

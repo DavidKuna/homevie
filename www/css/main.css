@@ -281,3 +281,8 @@ footer a:hover {
 	float: left;
 	margin-right: 10px;
 }
+
+.app_login {
+	width: 50%;
+	margin-bottom: 30px;
+}

@@ -22,6 +22,7 @@ class RoomManager extends Nette\Object {
 	 */
 	protected $rooms;
 	protected $clients;
+	public $userName;
 
 	public function __construct(Nette\Database\Context $database) {
 		$this->database = $database;
@@ -39,7 +40,10 @@ class RoomManager extends Nette\Object {
 	 */
 	public function processMessage(Client $sender, Message $message) {
 
-		switch ($message->getCommand()) {
+		$cmd = $message->getCommand();
+		$data = array();
+
+		switch ($cmd) {
 			case Message::JOIN: $this->joinClient($sender, $message);
 				break;
 			case Message::SOURCE: $this->processMessageSource($sender, $message);
@@ -52,14 +56,30 @@ class RoomManager extends Nette\Object {
 				break;
 		}
 
+		//viewers
+
+		$watchers = $this->getWatchers($sender);
+		$tmp = array();
+		foreach ($watchers as $watcher) {
+			$tmp[] = array($watcher["client"], $watcher["user_name"]);
+		}
+		$data["viewers"] = $tmp;
+
+
+		//about me
+		//$data["watcher"] = array($sender->getData("userName"), $sender->getId());
+
 		$message->convertToArray()
-			->appendToMsg("client_id", $sender->getID());
+				->appendToMsg("client_id", $sender->getID());
+
+		if (!empty($data))
+			$message->appendToMsg("serverData", $data);
 
 		$receivers = $this->getRoomatesArray($sender, $message);
 		$this->sendToReceivers($sender, $receivers);
 	}
-	
-		private function processMessageDisconnect(Client $sender, Message $message) {
+
+	private function processMessageDisconnect(Client $sender, Message $message) {
 		//some code here?
 	}
 
@@ -69,15 +89,14 @@ class RoomManager extends Nette\Object {
 		$room_id = $sender->getRoomId();
 		$text = $message->getMessage();
 		$user_name = $message->getUserName();
-		
+
 		$array["user_id"] = $client_id;
 		$array["room_id"] = $room_id;
 		$array["text"] = $text;
 		$array["created_at"] = Date("Y-m-d H:i:s");
 		$array["user_name"] = $user_name;
-		
+
 		$table = $this->database->query("INSERT INTO message", $array);
-		
 	}
 
 	private function processMessageSource(Client $sender, Message $message) {
@@ -116,8 +135,15 @@ class RoomManager extends Nette\Object {
 		$client->setTokent($message->getData());
 		if ($this->syncClient($client)) {
 			echo "Client ({$client->getId()}) has been joined to room {$client->getRoomId()}\n";
+
+			$watchers = $this->getWatchers($client);
+			foreach ($watchers as $watcher) {
+				$tmp[] = array($watcher["client"], $watcher["user_name"]);
+			}
+
 			$message = new Message($this->getRoom($client->getRoomId())->getSettingMessage());
 			$message->appendToMsg('client_id', $client->getId());
+			$message->appendToMsg('viewers', $tmp);
 			$client->send($message->toString());
 		} else {
 			echo "Creating client session failed! ({$client->getId()})\n";
@@ -146,10 +172,11 @@ class RoomManager extends Nette\Object {
 		);
 		$session = $this->database->table('session')->where('token', $client->getToken());
 		$session->update($data);
-		$session->select('phpsessid, room_id');
+		$session->select('phpsessid, room_id, user_name');
 		$row = $session->fetch();
 		if (isset($row->room_id)) {
 			$client->setRoomId($row->room_id);
+			$client->setData("userName", $row->user_name);
 			$this->assignOwner($client->getRoomId());
 			return true;
 		} else {
@@ -284,6 +311,11 @@ class RoomManager extends Nette\Object {
 		$this->database->table('room')
 				->where("(created_at + INTERVAL 5 MINUTE <= NOW()) AND id NOT IN (" . implode(',', array_keys($this->rooms)) . ")")
 				->delete();
+	}
+
+	private function getWatchers(Client $sender) {
+		$room_id = $sender->getRoomId();
+		return $this->database->table('session')->select("user_name, client")->where('room_id', $room_id)->fetchAll();
 	}
 
 }

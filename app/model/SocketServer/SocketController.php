@@ -37,8 +37,8 @@ class SocketController extends Nette\Object implements MessageComponentInterface
 		$msg["who"] = "";
 		
 		$message = new Message($msg, true);
-		$this->roomManager->processMessage($client, $message);
 		$this->roomManager->disconnectClient($client);
+		$this->roomManager->processMessage($client, $message);
 
         echo "Connection {$client->getId()} has disconnected\n";
 	}

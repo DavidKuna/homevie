@@ -9,12 +9,15 @@
 	var source = {$room->source};
 	videojs.options.flash.swf = "video-js.swf";
 
+	viewers = [];
 
 	messages = [];
 	{foreach $messages as $message}
 	chatItem = {};
 	chatItem.cmd = "chat";
-	chatItem.data = { text: {$message->text}, user_name: {$message->user_name}, time: "", user_id: {$message->user_id} };	
+	chatItem.data = {
+		text: {$message->text}, user_name: {$message->user_name}, time: "", user_id: {$message->user_id}
+	};
 	messages.push(chatItem);
 	{/foreach}
 
@@ -32,13 +35,13 @@
 </div>
 
 <div class="appRoom">
-	<div ng-controller="VideoCtrl" class="appVideoPlayer">		
+	<div id="VideoCtrl" ng-controller="VideoCtrl" class="appVideoPlayer">		
 		<video id="videoplayer" class="video-js vjs-default-skin"></video>
 	</div>
-	<div id="msgCtrl" ng-controller="MessageCtrl" class="appChat">
-		Username: <input class="user_name" value="{$user_name}">
-		
+	<div id="msgCtrl" ng-controller="MessageCtrl" class="appChat" ng-init="init()">
 		<section id="chatBox" class="scrollbar" schroll-bottom="chat.messages">
+			
+			
 			<div ng-repeat="message in chat.messages">
 				<div class="messageHead">
 					<span class="time">{{ message.time}}</span>
@@ -48,9 +51,14 @@
 			</div>
 		</section>
 		<textarea id="message" class="chatMessageInput"></textarea>
+			Počet: {{ chat.viewers.length }}
+		<div ng-repeat="viewer in chat.viewers track by $index">
+			<span>{{ viewer }}</span>
+		</div>
 	</div>
 	<div class="clear"></div>
-	
+
+
 	{include '../components/videochat.latte'}
 </div>
 
@@ -65,14 +73,15 @@
 		</div>
 	</div>
 
-	<div class="appVideoBox" ng-repeat="video in results">
-		<a href="{link Room:create, "source" => $youtubePlayUrl}{{ video.id.videoId }}">
-			<div class="appPlay">Přehrát video</div><img src="https://img.youtube.com/vi/{{ video.id.videoId }}/0.jpg"/>
-		</a>
+	<div class="js_loadedMovies">
+		<div class="appVideoBox" ng-repeat="video in results"><a>
+				<div data-source="{{ video.id.videoId}}" class="appPlay">Přehrát video</div><img src="https://img.youtube.com/vi/{{ video.id.videoId}}/0.jpg"/>
+			</a></div>
 	</div>
+
 </div>
-				
-				
+
+
 <!-- <div>
 	<label for="source-url">URL: </label>
 	<form ng-submit="setSourceURL()">

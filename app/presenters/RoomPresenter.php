@@ -15,6 +15,8 @@ class RoomPresenter extends BasePresenter {
 	/** @var Nette\Database\Context */
 	private $database;
 	private $roomId;
+	private $roomHash;
+	public $userName;
 
 	const SALT = "3-L*)!dZ";
 
@@ -28,16 +30,6 @@ class RoomPresenter extends BasePresenter {
 				->limit(5);
 	}
 
-	private function getSeesionId() {
-		$id = $this->context->session->getId();
-		if (empty($id)) {
-			$this->context->session->start();
-			return $this->getSeesionId();
-		} else {
-			return $id;
-		}
-	}
-
 	private function generateToken() {
 		$sessionId = $this->getSeesionId();
 		return md5(self::SALT . $sessionId . time());
@@ -48,65 +40,53 @@ class RoomPresenter extends BasePresenter {
 		return $messages;
 	}
 
-	public function renderView($roomId) {
+	public function renderView($roomHash) {
 
-		$this->roomId = $roomId;
-		if (($this->template->room = $this->database->table('room')->get($this->roomId)) === FALSE) {
+		$this->roomHash = $roomHash;
+		$room = $this->database->table('room')->where("hash", $this->roomHash)->select("source, id")->fetch();
+
+		if (empty($room)) {
 			$this->redirect("Room:create");
 			exit;
 		}
-//		$this->template->OT_data = $this->getOpenTokData();
+
+		$roomId = $room->id;
+		$this->roomId = $roomId;
+//		Nette\Diagnostics\Debugger::barDump($room);
+		$this->template->room = $room;
 
 		$data['token'] = $this->generateToken();
 		$data['room_id'] = $this->roomId;
 		$data['phpsessid'] = $this->getSeesionId();
+		$data['user_name'] = $this->userName;
+		
 		//$data['owner'] = 0;
 
 		$messages = $this->getRoomMessages($roomId);
 		$this->template->messages = $messages;
 		$this->template->token = $data['token'];
 
-		if ($this->getHttpRequest()->getCookie("chat_user_name")) {
-			$user_name = $this->getHttpRequest()->getCookie("chat_user_name");
-		} else {
-			$arr = array("Apple", "Orange", "Pineapple", "Melon", "Lemon", "Peach", "Strawberry", "Blueberry");
-			$user_name = $arr[array_rand($arr, 1)];
-		}
-		$this->template->user_name = $user_name;
-
 		$this->sessions->createOrUpdate($data);
 		$this->context->httpResponse->setCookie('TOKEN', $data['token'], '1 days', null, null, null, false);
 	}
 
-	protected function createComponentSearchForm()
-    {
-        $form = new UI\Form;
-        $form->addText('query', '')
+	protected function createComponentSearchForm() {
+		$form = new UI\Form;
+		$form->addText('query', '')
 				->setAttribute('class', 'appSearchInput')
 				->setAttribute('placeholder', 'Search a video or paste URL')
 				->setAttribute('ng-model', 'searchQuery')
 				->setAttribute('ng-submit', 'setSourceURL()')
 				->setRequired('Zadejte prosím URL videa na youtube.com');
-        $form->addSubmit('search', 'Go')
-			->setAttribute('class', 'appSearchButt');
-        return $form;
-    }
-
-	private function getOpenTokData(){
-		$apiObj = new \OpenTokSDK(\API_Config::API_KEY, \API_Config::API_SECRET);
-		$session = $apiObj->create_session();
-
-		$data['apiKey'] = \API_Config::API_KEY;
-		$data['sessionId'] = $session->getSessionId();
-		$data['token'] = $apiObj->generate_token($data['sessionId']);
-
-		return $data;
+		$form->addSubmit('search', 'Go')
+				->setAttribute('class', 'appSearchButt');
+		return $form;
 	}
 
 	public function renderCreate($source) {
-		if(isset($source)) {
+		if (isset($source)) {
 			$newRoom = $this->context->ServiceRooms->createNewRoom($source);
-			$this->redirect("Room:view", array('roomId' => $newRoom->getId()));
+			$this->redirect("Room:view", array('roomHash' => $newRoom->getHash()));
 		} else {
 			$this->flashMessage('You have to fill video source');
 			$this->redirect("Homepage:default");

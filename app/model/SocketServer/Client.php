@@ -16,6 +16,7 @@ class Client extends Nette\Object {
 	private $connection;
 	private $token;
 	private $roomId;
+	public $userName;
 
 	/**
 	 * Entity of connection
@@ -53,6 +54,14 @@ class Client extends Nette\Object {
 	 */
 	public function setRoomId($id){
 		$this->roomId = $id;
+	}
+
+	public function setData($key, $value){
+		$this->$key = $value;
+	}
+	
+	public function getData($key) {
+		return $this->$key;
 	}
 
 	public function setTokent($token){

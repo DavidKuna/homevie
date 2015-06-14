@@ -23,6 +23,8 @@
 			var settings = {
 				domain: {$domain}
 			};
+			
+			global_userName = {$userName};
 		</script>
 		{block head}{/block}
 	</head>
@@ -33,7 +35,7 @@
 			<a href="{link Homepage:default}">
 				<span class="logo"></span>
 			</a>
-			<span class="joinButton">Join Application</span>
+			<span class="joinButton">{$userName}</span>
 		</div>
 		<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 		<div class="appWrapper">

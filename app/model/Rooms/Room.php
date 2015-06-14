@@ -14,16 +14,19 @@ class Room extends Nette\Object {
 	const PLAYING = 1;
 
 	private $id;
+	private $hash;
 	private $timeStamp;
 	private $owner;
 	private $setting = array(
 		'source' => null,
 		'status' => self::PAUSED,
-		'time' => 0
+		'time' => 0,
+		"hash" => null
 	);
 
 	public function __construct($id, $setting = null){
 		$this->id = $id;
+		$this->hash = $setting["hash"];
 		if(is_array($setting)){
 			$this->setArraySetting($setting);
 		}
@@ -31,6 +34,10 @@ class Room extends Nette\Object {
 
 	public function getId(){
 		return $this->id;
+	}
+
+	public function getHash(){
+		return $this->hash;
 	}
 
 	public function setOwner($clientId){

@@ -44,8 +44,20 @@
 
 					},
 					source: function (data) {
-						_setup.src = data;
-						player.src(data);
+						console.log("Movie received");
+						console.log(data);
+
+						source = data;
+
+						if (typeof data === "object") {
+							var array = $.map(data, function (value, index) {
+								return [value];
+							});
+							var source = array[0];
+						}
+						_setup.src = source;
+						player.src(source);
+						player.currentTime(0);
 						player.load();
 						player.play();
 					},
@@ -68,9 +80,7 @@
 						return player.currentTime();
 					},
 					receive: function (cmd, data) {
-						if (cmd === "chat") {
-							jquery_receive(data);
-						} else {
+						if (_receive.hasOwnProperty(cmd)) {
 							received = cmd;
 							_receive[cmd](data);
 						}
@@ -97,3 +107,4 @@
 	});
 
 }(angular.module('angular-video', [])));
+

@@ -4,21 +4,8 @@
  * and open the template in the editor.
  */
 HomevieChat = {
-	default_username: "info@room",
-	notice_join: "Nový uživatel v místnosti",
-	notice_disconnect: "Odešel uživatel",
 	sendToAll: function (chatItem) {
 		var cmd = chatItem.cmd;
-
-		if (cmd === "join") {
-			text = this.notice_join;
-			user_name = this.default_username;
-		}
-
-		if (cmd === "disconnect") {
-			text = this.notice_disconnect;
-			user_name = this.default_username;
-		}
 
 		if (cmd === "chat") {
 			text = chatItem.data.text;
@@ -34,7 +21,7 @@ HomevieChat = {
 		var message = {user_name: user_name, text: text, time: time};
 		angular.element($("#msgCtrl")).scope().chat.messages.push(message);
 		angular.element($("#msgCtrl")).scope().$apply();
-	},
+	}
 };
 
 $(function () {
@@ -46,15 +33,12 @@ $(function () {
 
 			var chatItem = {};
 			var chatText = $(this).val();
-			var user_name = $(".user_name").val();
-			
+			var user_name = global_userName;
+
 			chatItem.cmd = "chat";
 			chatItem.data = {text: chatText, user_name: user_name};
 			a = myScope.sendChat(chatItem);
 			HomevieChat.sendToAll(chatItem);
-			
-			setCookie("chat_user_name", user_name, 30);
-
 			$(this).val("");
 		}
 	});
@@ -68,8 +52,8 @@ $(function () {
 });
 
 function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+	var expires = "expires=" + d.toUTCString();
+	document.cookie = cname + "=" + cvalue + "; " + expires;
 }

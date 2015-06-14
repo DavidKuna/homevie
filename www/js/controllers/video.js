@@ -80,7 +80,7 @@
 						return player.currentTime();
 					},
 					receive: function (cmd, data) {
-						if (_receive.hasOwnProperty(cmd)) {
+						if (cmd in _receive) {
 							received = cmd;
 							_receive[cmd](data);
 						}

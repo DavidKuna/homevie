@@ -1,11 +1,12 @@
 angular.module('Homevie')
   .directive('chatAudioPlayer', function ($sce) {
     return {
-      template: '<div class="audioStream"><audio ng-src="{{trustSrc()}}" autoplay></audio></div>',
+      template: '<div class="audioStream"><div>{{name()}}</div><audio ng-src="{{trustSrc()}}" autoplay></audio></div>',
       restrict: 'E',
       replace: true,
       scope: {
-        vidSrc: '@'
+        vidSrc: '@',
+		peerName: '@'
       },
       link: function (scope) {
         console.log('Initializing audio-player', $sce, scope);
@@ -16,6 +17,14 @@ angular.module('Homevie')
           }
 		  console.log("TRUST AS RESOURCE URL ", scope.vidSrc);
           return $sce.trustAsResourceUrl(scope.vidSrc);
+        };
+		
+		scope.name = function () {
+          if (!scope.peerName) {
+			  console.log("TRUST AS RESOURCE URL UNDEFINED", scope.peerName);
+            return undefined;
+          }
+          return scope.peerName;
         };
       }
     };

@@ -14,18 +14,17 @@ angular.module('controllers')
 		}
 
 		VideoStream.get()
-		.then(function (stream) {
+		.then(function (stream) {	
 			
-		var audioContext = new AudioContext; //or webkitAudioContext
-		var source = audioContext.createMediaStreamSource(stream);
+			var audioContext = new AudioContext;
+			var source = audioContext.createMediaStreamSource(stream);
+			var volume = audioContext.createGain();
+			source.connect(volume);
+			volume.connect(audioContext.destination);		
 
-		var volume = audioContext.createGain();
-		source.connect(volume);
-		volume.connect(audioContext.destination);		
-	
-		  Room.init(stream);
-		  stream = URL.createObjectURL(stream);
-		  Room.joinRoom(1);
+			Room.init(stream);
+			stream = URL.createObjectURL(stream);
+			Room.joinRoom(1);
 		}, function () {
 		  $scope.error = 'No audio/video permissions. Please refresh your browser and allow the audio/video capturing.';
 		});
@@ -62,5 +61,10 @@ angular.module('controllers')
 	$scope.startStream = function() {
 		$scope.initVideo();
 		$scope.myWebCam.isVisible = true;
+	};
+	
+	$scope.stopStream = function() {		
+		Room.closeMyStream();
+		$scope.myWebCam.isVisible = false;		
 	};
   });

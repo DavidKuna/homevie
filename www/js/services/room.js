@@ -25,8 +25,10 @@ angular.module('Homevie')
       }
       var pc = new RTCPeerConnection(iceConfig);
       peerConnections[id] = pc;
-	  console.log("pc.addStream", stream);
-      pc.addStream(stream);
+	  if (typeof stream === 'MediaStream') {
+		console.log("pc.addStream", stream);
+		pc.addStream(stream);
+	  }
       pc.onicecandidate = function (evnt) {
 		var data = { by: currentId, to: id, ice: evnt.candidate, type: 'ice' };
 		$rootScope.$broadcast('MessageCtrl.send', wsCmd, data);      
@@ -41,6 +43,19 @@ angular.module('Homevie')
 			$rootScope.$apply();
 		}
       };
+	  pc.oniceconnectionstatechange = function (evnt) {
+		if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'closed') {
+			console.log('Stream disconnected ', evnt);
+			api.emit('peer.disconnected', {
+			  id: id,
+			  stream: evnt.stream
+			});
+			if (!$rootScope.$$digest) {
+				$rootScope.$apply();
+			}
+		}
+	  };
+	  
       return pc;
     }
 
@@ -121,6 +136,12 @@ angular.module('Homevie')
 	  },
 	  makeOffer: function(id) {
 		makeOffer(id);
+	  },
+	  
+	  closeMyStream: function() {
+		  if (typeof stream !== 'undefined') {
+			  stream.stop();
+		  }
 	  }
     };
 	

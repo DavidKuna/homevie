@@ -68,9 +68,7 @@
 						return player.currentTime();
 					},
 					receive: function (cmd, data) {
-						if (cmd === "chat") {
-							jquery_receive(data);
-						} else {
+						if (cmd in _receive) {
 							received = cmd;
 							_receive[cmd](data);
 						}

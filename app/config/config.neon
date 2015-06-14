@@ -20,7 +20,9 @@ services:
 	- App\RouterFactory
 	SocketController: Model\SocketServer\SocketController
 	ServiceRooms: Model\Rooms\Service
+	ServiceUser: Model\User\Service
 	DbMapperRooms: Model\Rooms\DbMapper
+	DbMapperUser: Model\User\DbMapper
 	router: @App\RouterFactory::createRouter
 
 	# tables

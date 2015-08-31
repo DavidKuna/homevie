@@ -18,7 +18,7 @@ angular.module('Homevie')
 		
 	var wsCmd = 'videoChat';
 	var connected = false;
-
+	
     function getPeerConnection(id) {
       if (peerConnections[id]) {
         return peerConnections[id];
@@ -175,8 +175,17 @@ angular.module('Homevie')
 	  closeMyStream: function() {
 		  if (typeof stream !== 'undefined') {
 			  stream.stop();
+			  delete $rootScope.stream;
 		  }
-	  }
+	  },
+	  
+	  isPeerExisting: function(id) {
+			if (peerConnections[id]) {
+				return true;
+			} else {
+				return false;
+			}
+		}
     };
 	
     eventEmitter.inject(api);

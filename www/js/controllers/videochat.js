@@ -61,8 +61,13 @@ angular.module('controllers')
 	$scope.$on('VideoChatCtrl.receive', function ($scope, cmd, data) {
 		console.log('VideoChatCtrl.receive', cmd, data);
 		if(data.method === 'init') {
-			console.log('call Room.makeOffer(' + data.client_id + ')');
-			Room.makeOffer(data.client_id);
+			
+			if (!Room.isPeerExisting(data.client_id)) {
+				console.log('call Room.makeOffer(' + data.client_id + ')');
+				Room.makeOffer(data.client_id);
+			} else {
+				console.log('peerExists');
+			}
 		} else {
 			Room.handleMessage(data);
 		}
